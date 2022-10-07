@@ -1,6 +1,6 @@
 import unittest
 
-from kopp import josa
+from kopp import kopp
 
 pairs = [
     ("아노아(이)가 공격했다", "아노아가 공격했다"),
@@ -24,13 +24,16 @@ pairs = [
     ("(이)가", "가"),
     ("kopp(은)는", "kopp는"),
     ("josa(으)로", "josa로"),
+    ("(이)라고", "라고"),
+    ("(은)는(이)가(을)를(으)로", "는가를로"),
+    ("서울(으)로 부산(으)로", "서울로 부산으로"),
 ]
 
 
 class JosaTestCase(unittest.TestCase):
     def test(self):
         for a, b in pairs:
-            self.assertEqual(josa(a), b)
+            self.assertEqual(kopp(a), b)
 
 
 if __name__ == "__main__":

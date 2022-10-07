@@ -1,4 +1,4 @@
 from .__version__ import __version__
-from .main import josa, kopp
+from .main import kopp
 
-__all__ = ["__version__", "josa", "kopp"]
+__all__ = ["__version__", "kopp"]

@@ -61,7 +61,7 @@ def replace(m: re.Match) -> str:
     return prev + pair[key][0]
 
 
-def josa(text: str) -> str:
+def kopp(text: str) -> str:
     """
     '(이)가', '(와)과', '(을)를', '(은)는', '(으)로', '(아)야', '(이)여', '(이)라'
     postposition converter
@@ -79,17 +79,14 @@ def josa(text: str) -> str:
     Examples
     --------
 
-    >>> josa("오늘(은)는 날씨(이)가 좋네요.")
+    >>> kopp("오늘(은)는 날씨(이)가 좋네요.")
     '오늘은 날씨가 좋네요.'
-    >>> josa("doctest 모듈(은)는 대화형 파이썬 세션처럼 보이(은)는 텍스트(을)를 검색한 다음")
+    >>> kopp("doctest 모듈(은)는 대화형 파이썬 세션처럼 보이(은)는 텍스트(을)를 검색한 다음")
     'doctest 모듈은 대화형 파이썬 세션처럼 보이는 텍스트를 검색한 다음'
-    >>> josa("이 프로젝트는 pdm(으)로 관리됩니다.")
+    >>> kopp("이 프로젝트는 pdm(으)로 관리됩니다.")
     '이 프로젝트는 pdm로 관리됩니다.'
     """
     return pattern.sub(replace, text)
-
-
-kopp = josa
 
 
 if __name__ == "__main__":
