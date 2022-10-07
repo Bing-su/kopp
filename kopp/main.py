@@ -19,7 +19,7 @@ pattern = re.compile(
 )
 
 
-def is_hangle(char: int | str) -> bool:
+def is_hangle(char: str) -> bool:
     """
     check if char is hangle
     "가" ~ "힣"
@@ -28,16 +28,14 @@ def is_hangle(char: int | str) -> bool:
     ----------
     char : str
         str: string to check, must be length 1
-        int: char code to check
 
     Returns
     -------
     bool
         True if char is hangle
     """
-    if isinstance(char, str):
-        char = ord(char)
-    return 0xAC00 <= char <= 0xD7A3
+    code = ord(char)
+    return 0xAC00 <= code <= 0xD7A3
 
 
 def replace(m: re.Match) -> str:
@@ -83,7 +81,7 @@ def kopp(text: str) -> str:
     '오늘은 날씨가 좋네요.'
     >>> kopp("doctest 모듈(은)는 대화형 파이썬 세션처럼 보이(은)는 텍스트(을)를 검색한 다음")
     'doctest 모듈은 대화형 파이썬 세션처럼 보이는 텍스트를 검색한 다음'
-    >>> kopp("이 프로젝트는 pdm(으)로 관리됩니다.")
+    >>> kopp("이 프로젝트(은)는 pdm(으)로 관리됩니다.")
     '이 프로젝트는 pdm로 관리됩니다.'
     """
     return pattern.sub(replace, text)
