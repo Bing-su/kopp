@@ -1,0 +1,43 @@
+[project]
+name = "kopp"
+description = "korean postpositions"
+authors = [
+    {name = "dowon", email = "ks2515@naver.com"},
+]
+dependencies = []
+requires-python = ">=3.7"
+readme = "README.md"
+license = {text = "MIT"}
+dynamic = ["version"]
+
+[project.optional-dependencies]
+
+[project.scripts]
+kopp = "kopp.cli:cli"
+
+[tool.pdm]
+[tool.pdm.version]
+source = "file"
+path = "kopp/__version__.py"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "black",
+    "isort",
+    "ruff",
+    "pre-commit",
+]
+
+[tool.pdm.scripts]
+doctest = "python kopp/main.py"
+unittest = "python test.py"
+test = {composite = ["doctest", "unittest"]}
+lint = "pre-commit run -a"
+
+
+[build-system]
+requires = ["pdm-pep517>=1.0.0"]
+build-backend = "pdm.pep517.api"
+
+[tool.isort]
+profile = "black"
