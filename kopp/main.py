@@ -51,7 +51,7 @@ def replace(m: re.Match) -> str:
 
     char_code = (ord(prev) - 0xAC00) % 28
 
-    # prev doesn't have postposition or
+    # prev doesn't have final consonant or
     # key is '(으)로' and prev's final consonant is 'ㄹ'
     if char_code == 0 or (key == "(으)로" and char_code == 8):
         return prev + pair[key][1]
