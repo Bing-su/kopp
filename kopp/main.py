@@ -15,7 +15,7 @@ pair: dict[str, tuple[str, str]] = {
 
 key_pattern = "|".join(re.escape(k) for k in pair.keys())
 pattern = re.compile(
-    rf"(?P<prev>.?)(?P<key>{key_pattern})",
+    rf"(?P<prev>\S*?)(?P<key>{key_pattern})",
 )
 
 
@@ -38,18 +38,14 @@ def is_hangle(char: str) -> bool:
     return 0xAC00 <= code <= 0xD7A3
 
 
-def replace(m: re.Match) -> str:
-    """
-    replace function used in re.sub
-    """
-    prev = m.group("prev")
-    key = m.group("key")
+def replace(prev: str, key: str) -> str:
+    prev_ko = re.sub(r"[^가-힣]", "", prev)
 
     # No previous string or not hangle
-    if not prev or not is_hangle(prev):
+    if not prev_ko:
         return prev + pair[key][1]
 
-    char_code = (ord(prev) - 0xAC00) % 28
+    char_code = (ord(prev_ko[-1]) - 0xAC00) % 28
 
     # prev doesn't have final consonant or
     # key is '(으)로' and prev's final consonant is 'ㄹ'
@@ -57,6 +53,13 @@ def replace(m: re.Match) -> str:
         return prev + pair[key][1]
 
     return prev + pair[key][0]
+
+
+def sub_func(m: re.Match[str]) -> str:
+    "function for re.sub"
+    prev = m.group("prev")
+    key = m.group("key")
+    return replace(prev, key)
 
 
 def kopp(text: str) -> str:
@@ -84,7 +87,7 @@ def kopp(text: str) -> str:
     >>> kopp("이 프로젝트(은)는 pdm(으)로 관리됩니다.")
     '이 프로젝트는 pdm로 관리됩니다.'
     """
-    return pattern.sub(replace, text)
+    return pattern.sub(sub_func, text)
 
 
 if __name__ == "__main__":
